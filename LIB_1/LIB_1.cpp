@@ -62,13 +62,6 @@ int main()
 		алфавиту совокупность слов (string), начинающихся с
 		этой буквы
 	*/
-	{
-				
-		//NOP
-		//set<string> qwe = ("ABC", "AFC", "abc", "afc");
-		//map<char, set<string>> mcs;
-		//mcs.insert('A', );
-	}
 	/*
 		3а. Проинициализируйте map "вручную" посредством списка инициализации
 		С помощью range-based for и structured binding
@@ -80,11 +73,13 @@ int main()
 		С помощью range-based for и structured binding
 		распечатайте содержимое, например: A: any, apple, away
 	*/
-	//{
-	//	//дано (например):
-	//	const char* s[] = { "yong", "away", "bar", "any", "son", "apple" };
-	//	__asm nop
-	//}
+	{
+		//дано (например):
+		//const char* s[] = { "yong", "away", "bar", "any", "son", "apple" };
+		//set<string> qwe = { "ABC" , "ccc" , "AFC" , "abc" , "afc" , "CCC" };
+		//NOP
+		//map<char, set<string>> mcs = { 'A', "" };
+	}
 
 	/*********************************************************/
 	/*
