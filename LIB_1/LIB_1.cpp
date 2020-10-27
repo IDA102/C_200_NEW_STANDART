@@ -8,6 +8,12 @@
 */
 
 #include "H.h"
+bool sortString(const char* a, const char* b){	return (strcmp(a, b) < 0);	};
+class SortString_functor
+{
+public:
+	bool operator()(const char* a, const  char* b) const	{ return sortString(a, b); }
+};
 string operator*(string &T,int TT)
 {
 	if (typeid(string) == typeid(T))
@@ -54,6 +60,7 @@ int main()
 		size_t n = sizeof(year); //3 байта
 		
 		NOP;
+		system("cls");
 	}
 	/****************************************************/
 	/*
@@ -79,35 +86,50 @@ int main()
 			cout << S << "	" << OLD_S << "\n" << endl;
 		}
 		NOP
+		system("cls");
 	}
 
 	/**********************************************************/
 	/*
 		Задание 3. Создайте и заполните значениями map таким образом, чтобы он содержал в качестве ключа букву,
 		а в качестве значения отсортированную по  алфавиту совокупность слов (string), начинающихся с этой буквы
-	*/
+	*/ 
+	{
+		const char* s[] = { "yong", "away", "bar", "any", "son", "apple" };
+		map<char, set<const char*, SortString_functor>> mWords;
+		for (size_t i = 0; i < 6; i++) { (mWords[*s[i]]).insert(s[i]); }
+		NOP
+	}
 	/*
 		3а. Проинициализируйте map "вручную" посредством списка инициализации
-		С помощью range-based for и structured binding
-		распечатайте содержимое, например: A: any, apple, away
+		С помощью range-based for и structured binding	распечатайте содержимое, например: A: any, apple, away
 	*/
+	{
+		map<char, string> mcs = { {'A',"AAA"} , {'B',"BBB"} , {'C',"CCC"} };
+		for (const auto [c,s]:mcs)	{	cout << c << " " << s << endl;	}
+		NOP
+		system("cls");
+	}
 	/*
 		3б. Создайте пустой map и используйте заданный массив для выполнения задания.
 		С помощью range-based for и structured binding распечатайте содержимое, например: A: any, apple, away
 	*/
-	//{
-	//	//дано (например):
-	//	const char* s[] = { "yong", "away", "bar", "any", "son", "apple" };
-	//	map<char, const char *> mcs;
-	//	NOP
+	{
+		//дано (например):
+		const char* s[] = { "yong", "away", "bar", "any", "son", "apple" };
+		//string q(s);
+		//map<char, string> mcs = { {'A', s} };
+
+		NOP
 
 
 	//	for (const auto &[c,s]rM:mcs)
 	//	{
-	//		sout << c << s << endl;
+	//		cout << c << s << endl;
 	//	}	
-	//	NOP
-	//}
+		NOP
+		system("cls");
+	}
 
 	/*********************************************************/
 	/*
@@ -125,8 +147,8 @@ int main()
 
 		initializer_list<int> il{ 3,4,5 };
 		PrintAnyCont(il);		
-
 		NOP
+		system("cls");
 	}
 	/********************************************************/
 	/*
@@ -149,7 +171,7 @@ int main()
 		PrintAnyCont(ar);
 
 		NOP
-
+		system("cls");
 	}
 	/********************************************************/
 	/*		
@@ -165,6 +187,7 @@ int main()
 		//absSort(ar);
 
 		NOP
+		system("cls");
 	}
 
 	/********************************************************/
