@@ -8,6 +8,33 @@
 */
 
 #include "H.h"
+string operator*(string &T,int TT)
+{
+	if (typeid(string) == typeid(T))
+	{
+		for (char &c :T)
+		{
+			if ((c > 64) & (c < 91)) { c = c + 32; }
+			else if ((c > 96) & (c < 123)) { c = c - 32; }
+		}
+		NOP
+		return T;
+	}
+	return T;
+
+};
+template <typename T> void PrintAnyCont(const T &CASE)
+{	for (const auto &value : CASE)	{	cout << value << endl; } }
+template <typename T> void NegateAll(T &CASE)
+{		for (auto &value : CASE)	{		value = value * -1;	}	}
+
+/*void PrintAnyCont(vector<double> &T)
+{
+	for (const auto &value : T)
+	{
+		cout << value << endl;
+	}
+}*/
 
 int main()
 {
@@ -15,9 +42,9 @@ int main()
 	/* Задание 1 */ 
 	{
 		enum class months:unsigned char { January, February, March, April, May, June, July, August, September, October, November, December };
-		enum class weekDays { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday };
+		enum class weekDays:unsigned char { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday };
 
-	//	months m = months::January;
+		months m = months::January;
 	/*а) уберите проблемы (это значит, что КОМПИЛЯТОР не должен позволять программисту осуществлять опасные сравнения!)*/
 
 		//if (m == weekDays::Monday) {}
@@ -56,11 +83,8 @@ int main()
 
 	/**********************************************************/
 	/*
-		Задание 3. Создайте и заполните значениями
-		map таким образом, чтобы он содержал в качестве ключа
-		букву, а в качестве значения отсортированную по 
-		алфавиту совокупность слов (string), начинающихся с
-		этой буквы
+		Задание 3. Создайте и заполните значениями map таким образом, чтобы он содержал в качестве ключа букву,
+		а в качестве значения отсортированную по  алфавиту совокупность слов (string), начинающихся с этой буквы
 	*/
 	/*
 		3а. Проинициализируйте map "вручную" посредством списка инициализации
@@ -68,36 +92,39 @@ int main()
 		распечатайте содержимое, например: A: any, apple, away
 	*/
 	/*
-		3б. Создайте пустой map и используйте заданный массив
-		для выполнения задания.
-		С помощью range-based for и structured binding
-		распечатайте содержимое, например: A: any, apple, away
+		3б. Создайте пустой map и используйте заданный массив для выполнения задания.
+		С помощью range-based for и structured binding распечатайте содержимое, например: A: any, apple, away
 	*/
-	{
-		//дано (например):
-		//const char* s[] = { "yong", "away", "bar", "any", "son", "apple" };
-		//set<string> qwe = { "ABC" , "ccc" , "AFC" , "abc" , "afc" , "CCC" };
-		//NOP
-		//map<char, set<string>> mcs = { 'A', "" };
-	}
+	//{
+	//	//дано (например):
+	//	const char* s[] = { "yong", "away", "bar", "any", "son", "apple" };
+	//	map<char, const char *> mcs;
+	//	NOP
+
+
+	//	for (const auto &[c,s]rM:mcs)
+	//	{
+	//		sout << c << s << endl;
+	//	}	
+	//	NOP
+	//}
 
 	/*********************************************************/
 	/*
-		Задание 4. создать функцию для вывода на печать
-		элементов последовательностей, заданных ниже:
+		Задание 4. создать функцию для вывода на печать	элементов последовательностей, заданных ниже:
 	*/
 	{
-	 	std::vector<double> vd = { 1.1,2.2,3.3 };
-		//PrintAnyCont(vd);
+	 	vector<double> vd = { 1.1,2.2,3.3 };
+		PrintAnyCont(vd);
 
-		std::string s("abc");
-		//PrintAnyCont(s);
+		string s("abc");
+		PrintAnyCont(s);
 
 		int ar[] = { 1, 2, 3 };
-		//PrintAnyCont(ar);
+		PrintAnyCont(ar);
 
-		std::initializer_list<int> il{ 3,4,5 };
-		//PrintAnyCont(il);		
+		initializer_list<int> il{ 3,4,5 };
+		PrintAnyCont(il);		
 
 		NOP
 	}
@@ -106,39 +133,39 @@ int main()
 		Задание 5. 	
 		Cоздать функцию для "отрицания" значений, например:
 		было: {1, -2, 5}, стало: {-1, 2, -5})
-		изменение объектов типа std::string может выглядеть "aBc1" -> "AbC1"
-		элементов последовательностей, заданных ниже:
+		изменение объектов типа std::string может выглядеть "aBc1" -> "AbC1" элементов последовательностей, заданных ниже:
 	*/
-	//{
-	//	std::vector<double> vd{ 1.1,2.2,3.3 };
-	//	//NegateAll(vd);
+	{
+		std::vector<double> vd{ 1.1,2.2,3.3 };
+		NegateAll(vd);
+		PrintAnyCont(vd);
 
-	//	std::list<std::string> ls{ "aBc", "Qwerty", "n12" };
-	//	//NegateAll(ls);
+		std::list<std::string> ls{ "aBc", "Qwerty", "n12" };
+		NegateAll(ls);
+		PrintAnyCont(ls);
 
-	//	int ar[]{ 1, 2, 3 };
-	//	//NegateAll(ar);
+		int ar[]{ 1, 2, 3 };
+		NegateAll(ar);
+		PrintAnyCont(ar);
 
-	//	__asm nop
+		NOP
 
-	//}
+	}
 	/********************************************************/
 	/*		
-		Задание 6. Реализовать функцию сортировки по модулю
-		элементов последовательностей, заданных ниже
-		Собственно для сортировки можно использовать обобщенный
-		алгоритм sort(), а для задания условия - лямбда-функцию
+		Задание 6. Реализовать функцию сортировки по модулю	элементов последовательностей, заданных ниже
+		Собственно для сортировки можно использовать обобщенный алгоритм sort(), а для задания условия - лямбда-функцию
 	*/
-	//{
-	//	std::vector<double> vd = { -3.3,  2.2, -1.1 };
-	//	//absSort(vd);
+	{
+		std::vector<double> vd = { -3.3,  2.2, -1.1 };
+		//absSort(vd);
 
 
-	//	int ar[] = { -3, 2, -1 };
-	//	//absSort(ar);
+		int ar[] = { -3, 2, -1 };
+		//absSort(ar);
 
-	//	__asm nop
-	//}
+		NOP
+	}
 
 	/********************************************************/
 	/*

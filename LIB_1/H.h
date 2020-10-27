@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <set>
+#include <list>
 
 
 #define NOP __asm nop
