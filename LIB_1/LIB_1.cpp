@@ -105,10 +105,10 @@ int main()
 		С помощью range-based for и structured binding	распечатайте содержимое, например: A: any, apple, away
 	*/
 	{
-		map<char, string> mcs = { {'A',"AAA"} , {'B',"BBB"} , {'C',"CCC"} };
-		for (const auto [c,s]:mcs)	{	cout << c << " " << s << endl;	}
-		NOP
-		system("cls");
+		//map<char, string> mcs = { {'A',"AAA"} , {'B',"BBB"} , {'C',"CCC"} };
+		//for (const auto [c,s]:mcs)	{	cout << c << " " << s << endl;	}
+		//NOP
+		//system("cls");
 	}
 	/*
 		3б. Создайте пустой map и используйте заданный массив для выполнения задания.
@@ -116,13 +116,10 @@ int main()
 	*/
 	{
 		//дано (например):
-		const char* s[] = { "yong", "away", "bar", "any", "son", "apple" };
+		//const char* s[] = { "yong", "away", "bar", "any", "son", "apple" };
 		//string q(s);
 		//map<char, string> mcs = { {'A', s} };
-
 		NOP
-
-
 	//	for (const auto &[c,s]rM:mcs)
 	//	{
 	//		cout << c << s << endl;
@@ -130,7 +127,6 @@ int main()
 		NOP
 		system("cls");
 	}
-
 	/*********************************************************/
 	/*
 		Задание 4. создать функцию для вывода на печать	элементов последовательностей, заданных ниже:
