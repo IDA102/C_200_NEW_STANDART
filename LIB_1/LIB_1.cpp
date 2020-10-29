@@ -38,8 +38,8 @@ template <typename T> void absSort(T &CASE)
 	//ИЛИ ЧЕРЕЗ ЗАХВАТ ОБЪЕКТА С MUTABLE
 	auto iter_begin = std::begin(CASE);
 	auto iter_end = std::end(CASE);
-	for_each(iter_begin, iter_end, [](auto &x) { return x = abs(x); });//Я не понимаю, что я здесь сделал с auto(или чем его заменить);
-	sort(iter_begin, iter_end);
+	//for_each(iter_begin, iter_end, [](auto &x) { return x = abs(x); });//Я не понимаю, что я здесь сделал с auto(или чем его заменить);
+	sort(iter_begin, iter_end, [](const auto &x, const auto& y) { return  abs(x) < abs(y); });
 	NOP
 }
 template <typename T, typename TT> auto SumCont(const T &V, const TT &L)  
@@ -62,12 +62,12 @@ template <typename T, typename TT> auto SumCont(const T &V, const TT &L)
 	std::copy(iter_begin_V, iter_end_V, tmp.begin());
 	//std::copy(iter_begin_V, iter_end_V, inserter(tmp, tmp.begin()));
 	//auto sum = [](auto a, auto b) {return a+b};
-	transform(iter_begin_L, iter_end_L, tmp.begin(), tmp.begin(), [](auto a, auto b) {return a + b; });
+	transform(iter_begin_L, iter_end_L, tmp.begin(), tmp.begin(), [](const auto& a, const auto& b) {return a + b; });
 	return tmp;
 	NOP  
 }
 //template <typename T, typename TT> auto SumCont(const T& V, const TT &L)->SumCont<string> //Применение хвостовика в случае функции
-auto FUNCTOR = [](auto x) { return bool(((x % 2) == 0)); };//Почему только auto?????????
+auto FUNCTOR = [](const auto &x) { return bool(((x % 2) == 0)); };//Почему только auto?????????
 template <typename T, typename TT, typename TTT> void Separate(const T &V, TT &L, TTT &D, bool (*FUNCTOR)(int x))
 { for (const auto &value:V)	{	FUNCTOR(value) ? L.push_back(value) : D.push_back(value);} }
 
@@ -76,7 +76,7 @@ template<typename T> struct EnumMap
 	static std::map<std::string, T> m_eMap;
 	static const auto& getMap() { return m_eMap; }
 };
-//enum COLORS{RED,BLUE,ORANGE};
+enum class COLORS{RED,BLUE,ORANGE};
 
 /*void PrintAnyCont(vector<double> &T)
 {
@@ -85,6 +85,8 @@ template<typename T> struct EnumMap
 		cout << value << endl;
 	}
 }*/
+
+//std::map<std::string, COLORS> EnumMap<COLORS>::m_eMap = { {"red", COLORS::RED} };
 
 int main()
 {
@@ -115,15 +117,15 @@ int main()
 	{
 		vector<string> VS = { "QWE","zxc","1q2","w1e","qweQWE1q2w3e" };
 
-		for (string&S:VS)
+		for (auto&S:VS)
 		{
 			string OLD_S = S;
 			//string::iterator pS_begin = S.begin();
 			//string::iterator pS_end = S.end(); 
 			for (char &c : S)
 			{
-				if ((c > 64) & (c < 91)) { c = c + 32; }
-				else if ((c > 96) & (c < 123)){ c = c - 32; }
+				if ((c > 64) && (c < 91)) { c = c + 32; }
+				else if ((c > 96) && (c < 123)){ c = c - 32; }
 			}
 			cout << S << "	" << OLD_S << "\n" << endl;
 		}
@@ -148,8 +150,8 @@ int main()
 		С помощью range-based for и structured binding	распечатайте содержимое, например: A: any, apple, away
 	*/
 	{
-		map<char, string> mcs = { {'A',"AAA"} , {'B',"BBB"} , {'C',"CCC"} };
-		for (const auto [c,s]:mcs)	{	cout << c << " " << s << endl;	}
+		//map<char, set<string>> mcs = { {'A',"AAA"} , {'B',"BBB"} , {'C',"CCC"} };
+		//for (const auto& [c,s]:mcs)	{	cout << c << " " << s << endl;	}
 		NOP
 		system("cls");
 	}
@@ -277,7 +279,8 @@ int main()
 		std::vector<int> v{ 1,2,3,4,5 };
 		std::list<int> l; //сюда четные
 		std::deque<int> d; //а сюда нечетные
-		Separate(v, l, d, FUNCTOR);
+		std::set<int> s;
+		Separate(v, l, s, FUNCTOR);
 		NOP
 		system("cls");
 	}
