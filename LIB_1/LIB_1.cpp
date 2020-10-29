@@ -42,9 +42,8 @@ template <typename T> void absSort(T &CASE)
 	sort(iter_begin, iter_end);
 	NOP
 }
-template <typename T, typename TT> auto SumCont(const T& V, const TT &L)
+template <typename T, typename TT> auto SumCont(const T &V, const TT &L)  
 {
-
 	auto iter_begin_V = std::begin(V);
 	auto iter_end_V = std::end(V);
 
@@ -56,19 +55,27 @@ template <typename T, typename TT> auto SumCont(const T& V, const TT &L)
 
 	size_t SIZE = (std::size(V) > std::size(L))? std::size(V) : std::size(L);
 	vector<decltype(*iter_begin_V + *iter_begin_L)> tmp(SIZE); //Тут не правильно задаётся размерность
-
-
+	
 	//if (SIZE_V > SIZE_L) { std::copy(iter_begin, iter_end, tmp.push_back()); }
 	//else { std::copy(iter_begin, iter_end, tmp.push_back()); }
-
-
-	
-	std::copy(iter_begin_V, iter_end_V, inserter(tmp, tmp.begin()));
+	 	
+	std::copy(iter_begin_V, iter_end_V, tmp.begin());
+	//std::copy(iter_begin_V, iter_end_V, inserter(tmp, tmp.begin()));
 	//auto sum = [](auto a, auto b) {return a+b};
 	transform(iter_begin_L, iter_end_L, tmp.begin(), tmp.begin(), [](auto a, auto b) {return a + b; });
 	return tmp;
 	NOP  
 }
+//template <typename T, typename TT> auto SumCont(const T& V, const TT &L)->SumCont<string> //Применение хвостовика в случае функции
+auto FUNCTOR = [](auto x) { return bool(((x % 2) == 0)); };//Почему только auto?????????
+template <typename T, typename TT, typename TTT> void Separate(const T &V, TT &L, TTT &D, bool (*FUNCTOR)(int x))
+{ for (const auto &value:V)	{	FUNCTOR(value) ? L.push_back(value) : D.push_back(value);} }
+
+template<typename T> struct EnumMap
+{
+	static std::map<std::string, T> m_eMap;
+	static const auto& getMap() { return m_eMap; }
+};
 
 /*void PrintAnyCont(vector<double> &T)
 {
@@ -132,7 +139,7 @@ int main()
 	{
 		const char* s[] = { "yong", "away", "bar", "any", "son", "apple" };
 		map<char, set<const char*, SortString_functor>> mWords;
-		for (size_t i = 0; i < 6; i++) { (mWords[*s[i]]).insert(s[i]); }
+		for (size_t i = 0; i < 6; i++) { (mWords[*s[i]]).insert(s[i]); }//size для i 
 		NOP
 	}
 	/* 3а. */
@@ -167,7 +174,7 @@ int main()
 	/*********************************************************/
 	/* Задание 4 */
 	/*
-		Cоздать функцию для вывода на печать	элементов последовательностей, заданных ниже:
+		Cоздать функцию для вывода на печать элементов последовательностей, заданных ниже:
 	*/
 	{
 	 	vector<double> vd = { 1.1,2.2,3.3 };
@@ -223,7 +230,6 @@ int main()
 		NOP
 		system("cls");
 	}
-
 	/********************************************************/
 	/* Задание 7 */
 	/*
@@ -242,58 +248,59 @@ int main()
 		std::vector<int>  v{ 1  , 2  , 3  , 4 };
 		std::list<double> l{ 1.1, 2.2, 3.3, 4.4, 5.5 };
 		SumCont(v, l);
-		auto Q = SumCont(v, l);
+		auto VL = SumCont(v, l);
 		NOP
 
-		std::list<int> ll{ 1, 2, 3, 4, 5, 6, 7, 8 };
-		double ar[] = { 1.1, 2.2, 3.3, 4.4, 5.5 };
-		//auto Q = SumCont(ar, ll);
+		std::list<int> ll{ 1   , 2   , 3  , 4  , 5  , 6  , 7, 8 };
+		double ar[] =	 { 1.1 , 2.2 , 3.3, 4.4, 5.5 };
+		auto LAR = SumCont(ar, ll);
 		NOP
-
-		std::set<std::string> s{ "abc", "qwerty", "my" };
+		//Как именно складывать????? Строки или посимвольно?
+		std::set<std::string> s{ "abc", "qwerty", "my" };//SET сортирует
 		std::deque<const char*> d{ "111", "22" };
-		//auto Q = SumCont(s, d);
-
+		auto SD = SumCont(s, d);
 		NOP
+		system("cls");
 	}
-
 	/********************************************************/
+	/* Задание 8 */
 	/*
-		Задание 8. Реализуйте функцию, которая принимает следующие параметры:	
-		сформированную последовательность любого типа с элементами любого типа, 
-		два (пустых) контейнера любого типа из vector, list, deque, set 
-		с элементами того же типа, что и у сформированной последовательности 
+		Реализуйте функцию, которая принимает следующие параметры:	
+		сформированную последовательность любого типа с элементами любого типа, два (пустых) контейнера любого типа из vector,
+		list, deque, set с элементами того же типа, что и у сформированной последовательности 
 
-		Функция должна "разложить" значения заданной последовательности в два пустых контейнера 
-		согласно заданному условию. Условие задать лябда-функцией
-		Исходная последовательность при этом не меняется
+		Функция должна "разложить" значения заданной последовательности в два пустых контейнера согласно заданному условию.
+		Условие задать лябда-функцией. Исходная последовательность при этом не меняется.
+	*/
 	{
 		Например:
 		std::vector<int> v{ 1,2,3,4,5 };
 		std::list<int> l; //сюда четные
 		std::deque<int> d; //а сюда нечетные
-		//Separate(v, l, d, <условие>);
-
+		Separate(v, l, d, FUNCTOR);
 		NOP
+		system("cls");
 	}
-	*/
-
 	/********************************************************/
+	/* Задание 9 */ 
 	/*
-		Задание 9. C помощью алгоритма for_each()!!! 
+		C помощью алгоритма for_each()!!! 
 		(а не count_if()) посчитать сколько букв в верхнем регистре.
 		Использовать лямбда функцию
 	*/
-	//{
-	//	char s[] = "Hello World!";
-	//	//for_each
-	//NOP
-	//}
-
+	{
+		char s[] = "Hello World!";
+		size_t count = 0;
+		auto BEGIN = begin(s);
+		auto END = end(s);
+		for_each(BEGIN, END, [&count](auto x) {if ((x > 64) & (x < 91))++count; });
+		NOP
+		system("cls");
+	}
 	/********************************************************/
-	/*
-		Задание 10. Реализовать конвертацию enum в строковое представление  - enumToString и наоборот - stringToEnum
-
+	/* Задание 10 */
+	/*Реализовать конвертацию enum в строковое представление  - enumToString и наоборот - stringToEnum
+	 
 		Подсказки: 
 		1. Соответствующие именованным константам строки все равно нужно где-то хранить =>
 		1.1 Именованные константы в перечислении должны быть уникальными => соответствующие строки
@@ -314,13 +321,8 @@ int main()
 
 		3. Чтобы действия с map<string, <значение> > не зависили от типа перечисления, логично реализовать "обертку":
 	*/
-	/*
-		template<typename T> struct EnumMap
-		{
-			static std::map<std::string, T> m_eMap;
-			static const auto& getMap() { return m_eMap; }
-		};
-	*/
+	
+
 
 	//{
 	//	//Например:
