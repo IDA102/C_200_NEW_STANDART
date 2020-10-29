@@ -76,6 +76,7 @@ template<typename T> struct EnumMap
 	static std::map<std::string, T> m_eMap;
 	static const auto& getMap() { return m_eMap; }
 };
+//enum COLORS{RED,BLUE,ORANGE};
 
 /*void PrintAnyCont(vector<double> &T)
 {
@@ -129,8 +130,7 @@ int main()
 		NOP
 		system("cls");
 	}
-
-	/**********************************************************/
+		/**********************************************************/
 	/* Задание 3 */
 	/*
 		Создайте и заполните значениями map таким образом, чтобы он содержал в качестве ключа букву,
@@ -139,7 +139,7 @@ int main()
 	{
 		const char* s[] = { "yong", "away", "bar", "any", "son", "apple" };
 		map<char, set<const char*, SortString_functor>> mWords;
-		for (size_t i = 0; i < 6; i++) { (mWords[*s[i]]).insert(s[i]); }//size для i 
+		for (size_t i = 0; i < 6; i++) { (mWords[*s[i]]).insert(s[i]); }//size для i  < 6
 		NOP
 	}
 	/* 3а. */
@@ -148,10 +148,10 @@ int main()
 		С помощью range-based for и structured binding	распечатайте содержимое, например: A: any, apple, away
 	*/
 	{
-		//map<char, string> mcs = { {'A',"AAA"} , {'B',"BBB"} , {'C',"CCC"} };
-		//for (const auto [c,s]:mcs)	{	cout << c << " " << s << endl;	}
-		//NOP
-		//system("cls");
+		map<char, string> mcs = { {'A',"AAA"} , {'B',"BBB"} , {'C',"CCC"} };
+		for (const auto [c,s]:mcs)	{	cout << c << " " << s << endl;	}
+		NOP
+		system("cls");
 	}
 	/* 3б. */
 	/*
@@ -160,7 +160,7 @@ int main()
 	*/
 	{
 		//дано (например):
-		//const char* s[] = { "yong", "away", "bar", "any", "son", "apple" };
+		const char* s[] = { "yong", "away", "bar", "any", "son", "apple" };
 		//string q(s);
 		//map<char, string> mcs = { {'A', s} };
 		NOP
@@ -322,25 +322,21 @@ int main()
 		3. Чтобы действия с map<string, <значение> > не зависили от типа перечисления, логично реализовать "обертку":
 	*/
 	
-
-
-	//{
-	//	//Например:
-	//	/*
-	//		COLORS c1;
-	//		try {
-	//			c1 = stringToEnum<COLORS>("blue");
-	//		}
-	//		catch (...)
-	//		{
-	//		//...
-	//		}
-	//		
-	//		auto Str = enumToString(c1);
-	//	*/
-
-	//	NOP
-	//}
+	{
+	//Например:
+		
+			//COLORS c1;
+			//try 
+			//{
+				//c1 = stringToEnum<COLORS>("blue");
+			//}
+			//catch (...)
+			//{
+			//...
+			//}
+			//auto Str = enumToString(c1);
+		NOP
+	}
 
 
 	return 0;
