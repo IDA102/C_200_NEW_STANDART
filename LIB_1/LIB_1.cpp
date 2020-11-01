@@ -29,10 +29,24 @@ string operator*(string &T,int TT)
 	return T;
 
 };
+string operator-(string &T)
+{
+	if (typeid(string) == typeid(T))
+	{
+		for (char &c : T)
+		{
+			if ((c > 64) & (c < 91)) { c = c + 32; }
+			else if ((c > 96) & (c < 123)) { c = c - 32; }
+		}
+		NOP
+			return T;
+	}
+	return T;
+};
 template <typename T> void PrintAnyCont(const T &CASE)
 {	for (const auto &value : CASE)	{	cout << value << endl; } }
 template <typename T> void NegateAll(T &CASE)
-{		for (auto &value : CASE)	{		value = value * -1;	}	}
+{		for (auto &value : CASE)	{		value = -value;	}	}
 template <typename T> void absSort(T &CASE)
 {
 	//ИЛИ ЧЕРЕЗ ЗАХВАТ ОБЪЕКТА С MUTABLE
@@ -67,44 +81,56 @@ template <typename T, typename TT> auto SumCont(const T &V, const TT &L)
 	NOP  
 }
 //template <typename T, typename TT> auto SumCont(const T& V, const TT &L)->SumCont<string> //Применение хвостовика в случае функции
-auto FUNCTOR = [](const auto &x) { return bool(((x % 2) == 0)); };//Почему только auto?????????
-template <typename T, typename TT, typename TTT> void Separate(const T &V, TT &L, TTT &D, bool (*FUNCTOR)(int x))
-{ for (const auto &value:V)	{	FUNCTOR(value) ? L.push_back(value) : D.push_back(value);} }
-
+auto FUNCTOR = [](const auto &x) { return bool(((x % 2) == 0)); };//Вы поставили ссылку и всё сломалось почему-то??? Всё дело в константности!!!!!
+template <typename T, typename TT, typename TTT> void Separate(const T &V, TT &L, TTT &D, bool (*FUNCTOR)(const int &x))
+{
+	for (const auto &value : V) { FUNCTOR(value) ? L.push_back(value) : D.push_back(value); }
+	//for (const auto &value : V) { FUNCTOR(value)? L.insert(L.end(), value): D.insert(D.end(), value);}//Почему не работает?????
+	//for (const auto &value : V)
+	//{
+	//	if (FUNCTOR(value))
+	//	{
+	//		L.insert(L.end(), value);
+	//	}
+	//	else
+	//	{
+	//		D.insert(D.end(), value);
+	//	}
+	//}
+}
+//{ for (const auto &value : V) { FUNCTOR(value) ? L.push_back(value) : D.push_back(value); } }
+enum COLORS { RED, BLUE, ORANGE };
+static int m_eMap;
 template<typename T> struct EnumMap
 {
-	static std::map<std::string, T> m_eMap;
-	static const auto& getMap() { return m_eMap; }
+	T k;
+	static int m_eMap;
+	//static const auto& getMap() { return m_eMap; }
 };
-enum class COLORS{RED,BLUE,ORANGE};
 
-/*void PrintAnyCont(vector<double> &T)
+template<typename T> T stringToEnum(const char*)
 {
-	for (const auto &value : T)
-	{
-		cout << value << endl;
-	}
-}*/
 
-//std::map<std::string, COLORS> EnumMap<COLORS>::m_eMap = { {"red", COLORS::RED} };
+	return COLORS::RED;
+}
 
 int main()
 {
 	/****************************************************/
-	/* Задание 1 */ 
+	/* Задание 1 */
 	{
-		enum class months:unsigned char { January, February, March, April, May, June, July, August, September, October, November, December };
-		enum class weekDays:unsigned char { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday };
+		enum class months :unsigned char { January, February, March, April, May, June, July, August, September, October, November, December };
+		enum class weekDays :unsigned char { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday };
 
 		months m = months::January;
-	/*а) уберите проблемы (это значит, что КОМПИЛЯТОР не должен позволять программисту осуществлять опасные сравнения!)*/
+		/*а) уберите проблемы (это значит, что КОМПИЛЯТОР не должен позволять программисту осуществлять опасные сравнения!)*/
 
-		//if (m == weekDays::Monday) {}
+			//if (m == weekDays::Monday) {}
 
-	/*б) оптимизируйте использование памяти*/
+		/*б) оптимизируйте использование памяти*/
 		months year[] = { months::January , months::February , months::March };
 		size_t n = sizeof(year); //3 байта
-		
+
 		NOP;
 		system("cls");
 	}
@@ -117,7 +143,7 @@ int main()
 	{
 		vector<string> VS = { "QWE","zxc","1q2","w1e","qweQWE1q2w3e" };
 
-		for (auto&S:VS)
+		for (auto&S : VS)
 		{
 			string OLD_S = S;
 			//string::iterator pS_begin = S.begin();
@@ -125,22 +151,23 @@ int main()
 			for (char &c : S)
 			{
 				if ((c > 64) && (c < 91)) { c = c + 32; }
-				else if ((c > 96) && (c < 123)){ c = c - 32; }
+				else if ((c > 96) && (c < 123)) { c = c - 32; }
 			}
 			cout << S << "	" << OLD_S << "\n" << endl;
 		}
 		NOP
-		system("cls");
+			system("cls");
 	}
-		/**********************************************************/
-	/* Задание 3 */
-	/*
-		Создайте и заполните значениями map таким образом, чтобы он содержал в качестве ключа букву,
-		а в качестве значения отсортированную по  алфавиту совокупность слов (string), начинающихся с этой буквы
-	*/ 
+	/**********************************************************/
+/* Задание 3 */
+/*
+	Создайте и заполните значениями map таким образом, чтобы он содержал в качестве ключа букву,
+	а в качестве значения отсортированную по  алфавиту совокупность слов (string), начинающихся с этой буквы
+*/
 	{
 		const char* s[] = { "yong", "away", "bar", "any", "son", "apple" };
-		map<char, set<const char*, SortString_functor>> mWords;
+		map<char, set<string>> mWords;
+		//map<char, set<const char*, SortString_functor>> mWords;
 		for (size_t i = 0; i < 6; i++) { (mWords[*s[i]]).insert(s[i]); }//size для i  < 6
 		NOP
 	}
@@ -150,8 +177,13 @@ int main()
 		С помощью range-based for и structured binding	распечатайте содержимое, например: A: any, apple, away
 	*/
 	{
-		//map<char, set<string>> mcs = { {'A',"AAA"} , {'B',"BBB"} , {'C',"CCC"} };
-		//for (const auto& [c,s]:mcs)	{	cout << c << " " << s << endl;	}
+		map<char, set<string>> mcs = { {'A',set<string>{"AAA"}},{'B',set<string>{"BBB"}}, {'C',set<string>{"CCC"}}};
+		for (const auto& [c,s]:mcs)	
+		{	
+			cout << c << ":";
+			for (auto i:s) { cout << i; }
+			cout << endl;
+		}
 		NOP
 		system("cls");
 	}
@@ -163,13 +195,17 @@ int main()
 	{
 		//дано (например):
 		const char* s[] = { "yong", "away", "bar", "any", "son", "apple" };
-		//string q(s);
-		//map<char, string> mcs = { {'A', s} };
+		map<char, set<string>> mcs;
+		for (size_t i = 0; i < 6; i++) { (mcs[*s[i]]).insert(s[i]); }
 		NOP
-	//	for (const auto &[c,s]rM:mcs)
-	//	{
-	//		cout << c << s << endl;
-	//	}	
+		for (const auto &[c,s]:mcs)
+		{
+			{
+				cout << c << ":";
+				for (auto i : s) { cout << i << " "; }
+				cout << endl;
+			}
+		}	
 		NOP
 		system("cls");
 	}
@@ -219,7 +255,7 @@ int main()
 	/********************************************************/
 	/* Задание 6 */
 	/*
-		Реализовать функцию сортировки по модулю	элементов последовательностей, заданных ниже
+		Реализовать функцию сортировки по модулю элементов последовательностей, заданных ниже
 		Собственно для сортировки можно использовать обобщенный алгоритм sort(), а для задания условия - лямбда-функцию
 	*/
 	{
@@ -257,7 +293,6 @@ int main()
 		double ar[] =	 { 1.1 , 2.2 , 3.3, 4.4, 5.5 };
 		auto LAR = SumCont(ar, ll);
 		NOP
-		//Как именно складывать????? Строки или посимвольно?
 		std::set<std::string> s{ "abc", "qwerty", "my" };//SET сортирует
 		std::deque<const char*> d{ "111", "22" };
 		auto SD = SumCont(s, d);
@@ -275,12 +310,13 @@ int main()
 		Условие задать лябда-функцией. Исходная последовательность при этом не меняется.
 	*/
 	{
-		Например:
+		//Например:
 		std::vector<int> v{ 1,2,3,4,5 };
 		std::list<int> l; //сюда четные
 		std::deque<int> d; //а сюда нечетные
-		std::set<int> s;
-		Separate(v, l, s, FUNCTOR);
+		//std::set<int> s;
+		Separate(v, l, d, FUNCTOR);
+		//Separate(v, l, s, FUNCTOR);
 		NOP
 		system("cls");
 	}
@@ -328,19 +364,26 @@ int main()
 	{
 	//Например:
 		
-			//COLORS c1;
-			//try 
-			//{
-				//c1 = stringToEnum<COLORS>("blue");
-			//}
-			//catch (...)
-			//{
+			COLORS c1;
+			NOP
+			try 
+			{
+				EnumMap<int> q;
+				//q.m_eMap.push_back(2);
+				NOP
+				//EnumMap<COLORS>::m_eMap["RED"] = COLORS::BLUE; //{ {string{"RED"},COLORS::BLUE} };
+				//EnumMap<COLORS>::m_eMap = { {string{"RED"}, COLORS::RED}, { string{"BLUE"},COLORS::BLUE } };
+				//c1 = stringToEnum<COLORS>("BLUE");
+				//std::map<std::string, COLORS> m = EnumMap<COLORS>::getMap();
+				NOP
+			}
+			catch (...)
+			{
 			//...
-			//}
+			}
 			//auto Str = enumToString(c1);
 		NOP
 	}
-
 
 	return 0;
 }
