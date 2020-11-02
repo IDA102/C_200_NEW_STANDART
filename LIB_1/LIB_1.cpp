@@ -100,19 +100,22 @@ template <typename T, typename TT, typename TTT> void Separate(const T &V, TT &L
 }
 //{ for (const auto &value : V) { FUNCTOR(value) ? L.push_back(value) : D.push_back(value); } }
 enum COLORS { RED, BLUE, ORANGE };
-static int m_eMap;
 template<typename T> struct EnumMap
 {
+
+	static int val;
 	T k;
 	static int m_eMap;
-	//static const auto& getMap() { return m_eMap; }
+	//EnumMap(int y) { m_eMap = y; }
+	static const auto& getMap() { return m_eMap; }
 };
-
 template<typename T> T stringToEnum(const char*)
 {
 
 	return COLORS::RED;
 }
+
+int EnumMap<int>::val;
 
 int main()
 {
@@ -369,8 +372,10 @@ int main()
 			try 
 			{
 				EnumMap<int> q;
+				q.val = 3;
+				
 				//q.m_eMap.push_back(2);
-				NOP
+				//NOP
 				//EnumMap<COLORS>::m_eMap["RED"] = COLORS::BLUE; //{ {string{"RED"},COLORS::BLUE} };
 				//EnumMap<COLORS>::m_eMap = { {string{"RED"}, COLORS::RED}, { string{"BLUE"},COLORS::BLUE } };
 				//c1 = stringToEnum<COLORS>("BLUE");

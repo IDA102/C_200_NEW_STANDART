@@ -18,11 +18,17 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="LIB_3.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="H.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{4DCEC058-AE23-44E0-A673-51EB7A27358B}</ProjectGuid>
+    <ProjectGuid>{DA275457-CB3F-4D64-8E24-41FF6A898293}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>LIB2</RootNamespace>
+    <RootNamespace>LIB3</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -150,12 +156,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="LIB_2.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="H.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
