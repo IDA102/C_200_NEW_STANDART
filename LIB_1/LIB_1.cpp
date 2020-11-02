@@ -99,23 +99,21 @@ template <typename T, typename TT, typename TTT> void Separate(const T &V, TT &L
 	//}
 }
 //{ for (const auto &value : V) { FUNCTOR(value) ? L.push_back(value) : D.push_back(value); } }
+
 enum COLORS { RED, BLUE, ORANGE };
 template<typename T> struct EnumMap
 {
-
-	static int val;
-	T k;
-	static int m_eMap;
-	//EnumMap(int y) { m_eMap = y; }
-	static const auto& getMap() { return m_eMap; }
+	inline static std::map<std::string, T> m_eMap{ {"RED",} , {BLUE} , {} };//В чём разница между inline и статичным объявлением члена класса 
+	inline static const auto& getMap() { return m_eMap; }
 };
-template<typename T> T stringToEnum(const char*)
-{
+//map<string, COLORS> EnumMap<COLORS>::m_eMap;
 
+template<typename T> T stringToEnum(const char* x)
+{
+	string str = x;
+	const auto F = EnumMap<T>::getMap();
 	return COLORS::RED;
 }
-
-int EnumMap<int>::val;
 
 int main()
 {
@@ -163,10 +161,10 @@ int main()
 	}
 	/**********************************************************/
 /* Задание 3 */
-/*
+	/*
 	Создайте и заполните значениями map таким образом, чтобы он содержал в качестве ключа букву,
 	а в качестве значения отсортированную по  алфавиту совокупность слов (string), начинающихся с этой буквы
-*/
+	*/
 	{
 		const char* s[] = { "yong", "away", "bar", "any", "son", "apple" };
 		map<char, set<string>> mWords;
@@ -368,19 +366,18 @@ int main()
 	//Например:
 		
 			COLORS c1;
-			NOP
+
+			//EnumMap<COLORS> q;
+			//q.m_eMap["BLUE"] = COLORS::BLUE;
+			//NOP
+			//EnumMap<COLORS> qqqq;
+			//qqqq.m_eMap["RED"] = COLORS::RED;
+			//NOP
 			try 
 			{
-				EnumMap<int> q;
-				q.val = 3;
-				
-				//q.m_eMap.push_back(2);
-				//NOP
-				//EnumMap<COLORS>::m_eMap["RED"] = COLORS::BLUE; //{ {string{"RED"},COLORS::BLUE} };
-				//EnumMap<COLORS>::m_eMap = { {string{"RED"}, COLORS::RED}, { string{"BLUE"},COLORS::BLUE } };
-				//c1 = stringToEnum<COLORS>("BLUE");
-				//std::map<std::string, COLORS> m = EnumMap<COLORS>::getMap();
-				NOP
+
+
+					c1 = stringToEnum<COLORS>("BLUE");
 			}
 			catch (...)
 			{
