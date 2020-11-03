@@ -2,7 +2,12 @@
 
 
 constexpr int factorial(size_t x){	return (x) ? x * factorial(x - 1) : 1; }
-constexpr int operator""_b(const char* x) { return stoi(x, 0, 2); };
+constexpr int operator""_b(unsigned long long x)
+{ 
+	x%2
+	return 1;
+	//return (x | char(255));
+};
 //int f(const char *x){	return stoi(x, 0, 2);}
 //constexpr int operator""_b(const char* x) { return f(x); };
 //constexpr int operator""_b(const char* x) { return stoi(x, 0, 2); };
@@ -22,9 +27,9 @@ int main()
 		в) добавьте разделители (Delimeter)
 	*/
 	{
-		char space = ' ';
-		cout << "my name is 'Marina' " << endl;
-		cout << "my"<<space<<"name is 'Marina' "s;
+		cout << "my name is \"Marina\"" << endl;
+		cout << R"(my name is "Marina")" << endl;
+		cout << R"qqq(my name is "Marina")qqq" << endl;
 		NOP
 	}
 	//////////////////////////////////////////////////////////////////////////////////////////////
@@ -54,7 +59,7 @@ int main()
 		NOP
 		//попробуйте:
 		int m = 7;
-		//constexpr int n1 = factorial(m); Ошибка "не constexpr"
+		//constexpr int n1 = factorial(m);// Ошибка "не constexpr"
 		//int ar1[n1];
 		
 		//а так?
@@ -80,7 +85,7 @@ int main()
 	*/
 	{
 		//int y = "123"_b;//<---почему так нельзя???
-		//int Z = 100000000_b;
+		unsigned char Z = 100000000_b;
 		NOP
 	}
 
