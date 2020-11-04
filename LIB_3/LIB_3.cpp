@@ -1,23 +1,67 @@
 #include"H.h"
 
+constexpr int CONV_BIT(const char* z)
+{
+	//return (*z == '0') ? (1<<1) : 0;
+	return (*z == '0') ? (1 << 1) : 0;
+}
+constexpr int BIT(const char* z)
+{
+	//return (*z == '\0') ? CONV_BIT(--z) :BIT(++z);
+	int x = 0;
+	while (*z != '\0')
+	{
+		if (*z == '1') { x = (x | 1); x = x << 1; }
+		else if (*z == '0') { x = (x | 0); x = x << 1; }
+		++z;
+	}
+	return x = x>>1;
 
+}
+constexpr int operator""_b(const char* x){	return BIT(x); };
 constexpr int factorial(size_t x){	return (x) ? x * factorial(x - 1) : 1; }
-constexpr int operator""_b(unsigned long long x)
+string operator""_toBinStr(unsigned long long x) 
 { 
-	x%2
-	return 1;
-	//return (x | char(255));
+	string str{};
+	int ost = 0;
+	while (x != 1)
+	{
+		ost = x % 2;
+		x = x / 2;
+		str += (ost == 0) ? '0' : '1';
+		
+	}
+	str += '1';
+	reverse(str.begin(), str.end());
+	return str;
 };
-//int f(const char *x){	return stoi(x, 0, 2);}
-//constexpr int operator""_b(const char* x) { return f(x); };
-//constexpr int operator""_b(const char* x) { return stoi(x, 0, 2); };
-//int operator""_toBinStr(int x) {};
-
-
+constexpr int r(int a, int b) { return a + b; }
+template<typename T> class VEC
+{ 
+	int M[r(1,2)];
+	T MAX = 0;
+	T MIN = 0;
+	set<T> SET;
+public:
+	constexpr VEC(std::initializer_list<T> x):SET(x)
+	{ 
+		MIN = *SET.begin();
+		MAX = MAX = *(--(this->SET.end()));
+	};
+	constexpr VEC(int a, int b) {}
+	constexpr T GET_MAX() { return MAX; }
+	constexpr T GET_MIN() { return MIN; }
+	constexpr int FIND_IN(T Z)
+	{
+		auto q = SET.find(Z);
+		if(q != SET.end() )	return *q;
+		if (Z > MAX) return MAX;
+		if (Z < MIN) return MIN;
+	}
+};
 
 int main()
 {
-	
 	/* Задание 1 */
 	/*
 		Сырые строковые литералы (Raw String Literals)
@@ -31,6 +75,7 @@ int main()
 		cout << R"(my name is "Marina")" << endl;
 		cout << R"qqq(my name is "Marina")qqq" << endl;
 		NOP
+		system("cls");
 	}
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	/*Задание 2*/
@@ -65,6 +110,7 @@ int main()
 		//а так?
 		int n2 = factorial(m); //всё нормально
 		NOP
+		system("cls");
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,10 +131,11 @@ int main()
 	*/
 	{
 		//int y = "123"_b;//<---почему так нельзя???
-		unsigned char Z = 100000000_b;
+		size_t X = 0b100000000;
+		size_t Z = 100000000_b;
 		NOP
+		system("cls");
 	}
-
 	/*Задание 3b */
 	/*
 		Перевод в строковое двоичное представление, например: 256 -> "0b100000000" 
@@ -96,12 +143,11 @@ int main()
 		Подсказка: манипулятора std::bin пока нет => преобразование в двоичную строку придется делать вручную
 		Подсказка: количество разрядов в байте определяет константа CHAR_BIT - <cstdint>
 	*/
-
 	{
-		//std::string sBin = 256_toBinStr;
+		string sBin = 256_toBinStr;
 		NOP
+		system("cls");
 	}
-
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	/* Задание 4а */
 	/*
@@ -109,8 +155,7 @@ int main()
 		Создать класс (шаблон класса?) для хранения и манипулирования диапазоном значений.
 		В классе должны быть:
 			переменные для хранения минимального и максимального значений,
-			методы для получения каждого из значений
-			метод для проверки - попадает ли указанное значение в диапазон
+			методы для получения каждого из значений 
 			метод, который получает любое значение данного типа и формирует результирующее значение:
 									если принадлежит диапазону, то его и возвращаем
 									если меньше минимального значения, возвращаем минимальное
@@ -121,35 +166,49 @@ int main()
 						посредством constexpr-метода:
 	*/
 	{
-
-	NOP
+		VEC<int> Z{1,2,3,4,5};
+		int M = Z.GET_MAX();
+		int MM = Z.GET_MIN();
+		int y = Z.FIND_IN(5);
+		int y_MIN = Z.FIND_IN(7);
+		int y_MAX= Z.FIND_IN(0);
+		NOP
 	}	
-
 	//////////////////////////////////////////////////////////////////////////////////////////////
-	//Задание 5. unique_ptr
+	/* Задание 5 */ /*- unique_ptr*/
 	{
-
-		//5.а - обеспечьте корректное выполнение фрагмента
+		/* 5.а - обеспечьте корректное выполнение фрагмента */
 		{
 			std::vector<std::string*> v = { new std::string("aa"), new std::string("bb"), new std::string("cc") };
-			//Распечатайте все строки
-		
-			__asm nop
-			//???
-		} //???
-
-		//5.b - модифицируйте задание 5.а:
-		 //обеспечьте посредством std::unique_ptr: 
-		 //эффективное заполнение (вспомните про разные способы формирования std::unique_ptr), 
-		 //безопасное хранение указателей на динамически создаваемые объекты std::string, 
-		 //манипулирование,
-		 //и освобождение ресурсов
-		 //
-			
+			/* Распечатайте все строки */
+			for (string* x : v)	{ cout << *x << endl; }
+			NOP
+		}// ----------------------->>> Утечка памяти!!!!
+		/* 5.b - модифицируйте задание 5.а: */
+		/*
+			обеспечьте посредством std::unique_ptr: 
+			эффективное заполнение (вспомните про разные способы формирования std::unique_ptr), безопасное хранение 
+			указателей на динамически создаваемые объекты std::string, манипулирование, и освобождение ресурсов
+		*/	
 		{
 		 //Распечатайте все строки
+			//unique_ptr<string> v = make_unique<string>("aa");	
+			//unique_ptr<string> t = unique_ptr<string>(new string("aa"));
+			//vector<unique_ptr<string>> v(2);
+			//v[0] = unique_ptr<string>(new string("aa"));
 
-			__asm nop
+			//unique_ptr<string> l(new std::string("aa"));
+			//std::vector<unique_ptr<string>> v = {std::move(l)};
+			
+			//vector<unique_ptr<string>> v{};
+			//v.insert(v.end(), { make_unique<string>("qwe") });
+			//v.push_back(make_unique<string>("qwe"));
+			
+			
+			std::vector<unique_ptr<string>> v;
+	
+
+			NOP
 		 //??? Уничтожение динамически созданных объектов?
 		} //???
 

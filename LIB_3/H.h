@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <math.h>
 #include <iterator>
+#include <cstdint>
 
 #define NOP __asm nop
 using namespace std;
