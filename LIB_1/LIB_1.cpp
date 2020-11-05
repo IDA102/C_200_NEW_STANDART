@@ -103,7 +103,7 @@ template <typename T, typename TT, typename TTT> void Separate(const T &V, TT &L
 enum COLORS { RED, BLUE, ORANGE };
 template<typename T> struct EnumMap
 {
-	inline static std::map<std::string, T> m_eMap{ {"RED",} , {BLUE} , {} };//В чём разница между inline и статичным объявлением члена класса 
+	inline static std::map<std::string, T> m_eMap;//В чём разница между inline и статичным объявлением члена класса 
 	inline static const auto& getMap() { return m_eMap; }
 };
 //map<string, COLORS> EnumMap<COLORS>::m_eMap;
@@ -367,22 +367,22 @@ int main()
 		
 			COLORS c1;
 
-			//EnumMap<COLORS> q;
-			//q.m_eMap["BLUE"] = COLORS::BLUE;
-			//NOP
+			EnumMap<COLORS> q;
+			q.m_eMap["BLUE"] = COLORS::BLUE;
+			NOP
 			//EnumMap<COLORS> qqqq;
 			//qqqq.m_eMap["RED"] = COLORS::RED;
 			//NOP
-			try 
-			{
+			//try 
+			//{
 
 
-					c1 = stringToEnum<COLORS>("BLUE");
-			}
-			catch (...)
-			{
+					//c1 = stringToEnum<COLORS>("BLUE");
+			//}
+			//catch (...)
+			//{
 			//...
-			}
+			//}
 			//auto Str = enumToString(c1);
 		NOP
 	}
