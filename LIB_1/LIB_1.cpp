@@ -100,19 +100,32 @@ template <typename T, typename TT, typename TTT> void Separate(const T &V, TT &L
 }
 //{ for (const auto &value : V) { FUNCTOR(value) ? L.push_back(value) : D.push_back(value); } }
 
-enum COLORS { RED, BLUE, ORANGE };
+enum class COLORS:unsigned char{ RED, BLUE, ORANGE };
+enum class BAD :unsigned char { RED, BLUE, ORANGE };
 template<typename T> struct EnumMap
 {
-	inline static std::map<std::string, T> m_eMap;//В чём разница между inline и статичным объявлением члена класса 
-	inline static const auto& getMap() { return m_eMap; }
+	static std::map<std::string, T> m_eMap;//В чём разница между inline и статичным объявлением члена класса 
+	const static auto& getMap() { return m_eMap; }
 };
-//map<string, COLORS> EnumMap<COLORS>::m_eMap;
-
-template<typename T> T stringToEnum(const char* x)
+map<string, COLORS> EnumMap<COLORS>::m_eMap = { {"RED",COLORS::RED} , {"BLUE",COLORS::BLUE} , {"ORANGE",COLORS::ORANGE} };
+template<typename T> 
+T stringToEnum(const char* x)
 {
 	string str = x;
-	const auto F = EnumMap<T>::getMap();
-	return COLORS::RED;
+	auto F = EnumMap<T>::getMap();
+	typename map<string,  T>::iterator it = F.end();
+	typename map<string, T>::iterator tt = F.find(str);
+	if (it == tt) {throw("NOT ENUM TYPE"); }
+	else return (*tt).second;
+}
+template<typename T> string enumToString(T en)
+{
+	auto F = EnumMap<T>::getMap();
+	for (auto x : F)
+	{
+		if (x.second == en) { return x.first; }
+	}
+	throw("NOT STRING");
 }
 
 int main()
@@ -360,32 +373,34 @@ int main()
 		  анализировать соответствующий используемому типу перечисления контейнер
 
 		3. Чтобы действия с map<string, <значение> > не зависили от типа перечисления, логично реализовать "обертку":
-	*/
-	
+	*/	
 	{
-	//Например:
-		
-			COLORS c1;
+	//Например:		
+			//COLORS c1;
 
 			EnumMap<COLORS> q;
 			q.m_eMap["BLUE"] = COLORS::BLUE;
 			NOP
-			//EnumMap<COLORS> qqqq;
-			//qqqq.m_eMap["RED"] = COLORS::RED;
-			//NOP
-			//try 
-			//{
+			EnumMap<COLORS> qqqq;
+			qqqq.m_eMap["RED"] = COLORS::RED;
+			NOP
+			try 
+			{ 
+				COLORS c1 = stringToEnum<COLORS>("RED");
+				NOP
+				//BAD C2 = BAD::RED;
+				string str = enumToString<COLORS>(c1);
+				NOP
+			}
+			catch (const char *str) { cout << str << endl; }
+			catch (...)
+			{
+				cout << "";
+				NOP
 
-
-					//c1 = stringToEnum<COLORS>("BLUE");
-			//}
-			//catch (...)
-			//{
-			//...
-			//}
+			}
 			//auto Str = enumToString(c1);
 		NOP
 	}
-
 	return 0;
 }
