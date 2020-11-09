@@ -35,28 +35,19 @@ string operator""_toBinStr(unsigned long long x)
 	reverse(str.begin(), str.end());
 	return str;
 };
-constexpr int r(int a, int b) { return a + b; }
 template<typename T> class VEC
 { 
-	int M[r(1,2)];
-	T MAX = 0;
-	T MIN = 0;
-	set<T> SET;
+	T MAX;
+	T MIN;
 public:
-	constexpr VEC(std::initializer_list<T> x):SET(x)
-	{ 
-		MIN = *SET.begin();
-		MAX = MAX = *(--(this->SET.end()));
-	};
-	constexpr VEC(int a, int b) {}
-	constexpr T GET_MAX() { return MAX; }
-	constexpr T GET_MIN() { return MIN; }
+	constexpr VEC(T x,T y):MIN(x),MAX(y){};
+	constexpr T GET_MAX() const { return MAX; }
+	constexpr T GET_MIN() const { return MIN; }
 	constexpr int FIND_IN(T Z)
-	{
-		auto q = SET.find(Z);
-		if(q != SET.end() )	return *q;
+	{ 
 		if (Z > MAX) return MAX;
-		if (Z < MIN) return MIN;
+		else if (Z < MIN) return MIN;
+		else return Z;
 	}
 };
 auto DELITER = [](auto x) { delete[] x; };
@@ -165,12 +156,8 @@ int main(){
 						посредством constexpr-метода:
 	*/
 	{
-		VEC<int> Z{1,2,3,4,5};
-		int M = Z.GET_MAX();
-		int MM = Z.GET_MIN();
-		int y = Z.FIND_IN(5);
-		int y_MIN = Z.FIND_IN(7);
-		int y_MAX= Z.FIND_IN(0);
+		constexpr VEC<int> Z(1,5);
+		int U[Z.GET_MAX()];
 		NOP
 	}	
 	//////////////////////////////////////////////////////////////////////////////////////////////
@@ -183,6 +170,7 @@ int main(){
 			for (string* x : v)	{ cout << *x << endl; }
 			NOP
 			system("cls");
+			for (string* x : v) { delete x; }
 		}// ----------------------->>> Утечка памяти!!!!
 		/* 5.b - модифицируйте задание 5.а: */
 		/*
@@ -191,19 +179,11 @@ int main(){
 			указателей на динамически создаваемые объекты std::string, манипулирование, и освобождение ресурсов
 		*/	
 		{
-		 //Распечатайте все строки
-			//unique_ptr<string> v = make_unique<string>("aa");	
-			//unique_ptr<string> t = unique_ptr<string>(new string("aa"));
-			//vector<unique_ptr<string>> v(2);
-			//v[0] = unique_ptr<string>(new string("aa"));
-			//unique_ptr<string> l(new std::string("aa"));
-			//std::vector<unique_ptr<string>> v = {std::move(l)};
-			
+		 //Распечатайте все строки	
 			vector<unique_ptr<string>> v;
 			v.push_back(make_unique<string>("aa"));
 			v.push_back(make_unique<string>("bb"));
 			v.push_back(make_unique<string>("cc"));
-			//v.insert(v.end(), { make_unique<string>("qwe") });
 			for (unique_ptr<string> &x : v) { cout << *x.get() << endl; }
 			NOP
 			system("cls");
@@ -214,8 +194,12 @@ int main(){
 			добавьте возможность изменять хранящиеся строки	следующим образом (например, добавить указанный суффикс: "AAA" -> "AAA_1")  
 		*/
 		{
-
-	
+			string str{ "_1" };
+			vector<unique_ptr<string>> v;
+			v.push_back(make_unique<string>("aa"));
+			v.push_back(make_unique<string>("bb"));
+			v.push_back(make_unique<string>("cc"));
+			for (unique_ptr<string> &x : v) { *x+=str; cout << *x.get() << endl; }
 			NOP
 			system("cls");
 		}
