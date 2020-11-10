@@ -41,13 +41,21 @@ public:
 };
 template<typename T> class TEMP_BUFF
 {
-
+	T* TMP = nullptr;
 };
 template<typename T> class MyUniquePTR
 {
-	unique_ptr<T> TMP = nullptr;
+	 T* TMP = nullptr;
 public:
 	MyUniquePTR(T* tmp) :TMP(tmp) {};
+	MyUniquePTR(const MyUniquePTR&) = delete;
+	MyUniquePTR(MyUniquePTR&& tmp) = default;
+	~MyUniquePTR() { delete TMP; };
+	T* GetString() { return &TMP; };
+	void SetNewString(const char* str) { *TMP = str; };
+	T* operator->() { return TMP; };
+	T& operator *() { return *TMP; }
+	explicit operator bool() const { return TMP == nullptr; };
 };
 int main()
 {
@@ -62,8 +70,22 @@ int main()
 		NOP
 	}
 	{
+
+		NOP
+	}
+	{
 		MyUniquePTR<string> p1(new string("abc"));
-		std::cout << p1->;
+		std::cout << p1->front();
+		p1->append("qwerty");
+		string s2 = *p1;
+		MyUniquePTR<string> p2 = move(p1);
+		if (p1) { cout << "No object!" << endl; }
+		MyUniquePTR<string> p3(new string("vvv"));
+		//p3 = p2;//И здесь компилятор должен выдавать ошибку
+		vector< MyUniquePTR < string >> v;
+		list< MyUniquePTR < string >> l;
+		
+		/*copy + move iterators*/
 		NOP
 	}
 }
