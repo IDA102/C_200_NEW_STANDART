@@ -39,9 +39,55 @@ public:
 	//void TEMP_SET(T* h, T* hh) { tmp.insert(tmp.end(), h, hh); };
 	//void TEMP_set(vector<int>::iterator h, vector<int>::iterator hh)<<<<---------------------хочется что-то похожее
 };
-template<typename T> class TEMP_BUFF
+template<typename T> class MyQueue
 {
+	size_t CAP = 0;
+	size_t N = 0;
+	size_t FIRST = 0;
+	size_t LAST = 0;
+
 	T* TMP = nullptr;
+public:
+	MyQueue(std::initializer_list<T> l)
+	{
+		size_t q = l.size();
+		TMP = new T[q+2];
+		typename initializer_list<T>::iterator it = l.begin();
+		size_t k = 0;
+		while (it !=l.end())
+		{
+			TMP[k] = *it;
+			++it;
+			++k;
+		}
+		FIRST = 0;
+		LAST = FIRST+q-1;
+		CAP = q+2;
+		N = q;
+	};
+	const T* begin() { return TMP; };
+	const T* end() { return  TMP + N + 1; };
+	void push(const string &A)
+	{
+		if (CAP-N) {/*Расширение массива*/ }
+		else
+		{
+			LAST = (FIRST + N) % CAP;
+			TMP[LAST] = A;
+			++N;
+			NOP
+		}
+	}
+	T pop()
+	{
+		T tm = TMP[FIRST];
+		//ШУТКИ РАДИ ЧЕРЕЗ IF
+		if		(FIRST < LAST)					  { ++FIRST; --N; }
+		else if((FIRST > LAST) & (FIRST != --CAP)){	++FIRST; --N;}
+		else if((FIRST > LAST) & (FIRST == --CAP)){	FIRST = 0; --N;}
+		return tm;
+	};
+	~MyQueue(){ delete[] TMP; }
 };
 template<typename T> class MyUniquePTR
 {
@@ -70,7 +116,17 @@ int main()
 		NOP
 	}
 	{
-
+		//initializer_list<string> r = { string("zzz"),string("xxx"),string("ccc") };
+		//string * q = new string[3]{r};// Почему так не работает
+		//string * q = new string[3]{ string("AAA"),string("qwe") }; // А так работает
+		
+		MyQueue<string> q1{ string("AAA"),string("qwe") };
+		for (auto el : q1) { std::cout << el << ' '; }//Что тут перегрузить что бы были корректные итераторы based for
+		string s("123");
+		q1.push(s);
+		q1.push(string("456"));
+		string s1 = q1.pop();
+		q1.push("qqq");
 		NOP
 	}
 	{
@@ -84,7 +140,7 @@ int main()
 		//p3 = p2;//И здесь компилятор должен выдавать ошибку
 		vector< MyUniquePTR < string >> v;
 		list< MyUniquePTR < string >> l;
-		
+	
 		/*copy + move iterators*/
 		NOP
 	}
