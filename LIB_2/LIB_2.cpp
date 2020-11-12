@@ -209,7 +209,8 @@ int main()
 		MyQueue<string> q22 = std::move(q1);
 		MyQueue<string> q3{ 10 , string("!") };
 		q1 = q3;
-		q2 = MyQueue < string >(5, string("?"));
+		q2 = MyQueue<string>(5, string("?"));//<---- правильней вызывать move
+		q1 = { string("bbb"), string("ssss") };
 		NOP
 	}
 	{
