@@ -65,11 +65,72 @@ public:
 		CAP = q+2;
 		N = q;
 	};
+	MyQueue(int x, T y)
+	{
+		TMP = new T[x + 2];
+		for (int i = 0; i < x ; i++)
+		{ 
+			TMP[i] = y; 
+		}
+		FIRST = 0;
+		LAST = FIRST + x - 1;
+		CAP = x + 2;
+		N = x;
+	};
+	MyQueue(const MyQueue& x)
+	{
+		CAP = x.CAP;
+		N = x.N;
+		FIRST = x.FIRST;
+		LAST = x.LAST;
+		TMP = new T[CAP];
+		//memcpy(x.TMP, TMP,/*размер*/);// Это для класса MyString, там массив встроен в класс.
+		for (int i = 0 ; i<N ; i++)	{TMP[i] = x.TMP[i];	}
+	}
+	MyQueue(MyQueue& x)
+	{
+		CAP = x.CAP;
+		N = x.N;
+		FIRST = x.FIRST;
+		LAST = x.LAST;
+		TMP = new T[CAP];
+		//memcpy(x.TMP, TMP,/*размер*/);// Это для класса MyString, там массив встроен в класс.
+		for (int i = 0; i < N; i++) { TMP[i] = x.TMP[i]; }
+	}
+	MyQueue(MyQueue&& x)
+	{
+		CAP = x.CAP;
+		N = x.N;
+		FIRST = x.FIRST;
+		LAST = x.LAST;
+		TMP = x.TMP;
+		x.TMP = nullptr;
+	}
+	MyQueue(const MyQueue&& x)
+	{
+		CAP = x.CAP;
+		N = x.N;
+		FIRST = x.FIRST;
+		LAST = x.LAST;
+		TMP = x.TMP;
+		x.TMP = nullptr;
+	}
 	const T* begin() { return TMP; };
 	const T* end() { return  TMP + N + 1; };
-	void push(const string &A)
+	void push(T &A)
 	{
-		if (CAP-N) {/*Расширение массива*/ }
+		if (!(CAP-N)) {/*Расширение массива*/ }
+		else
+		{
+			LAST = (FIRST + N) % CAP;
+			TMP[LAST] = A;
+			++N;
+			NOP
+		}
+	}
+	void push(const T &A)
+	{
+		if (!(CAP - N)) {/*Расширение массива*/ }
 		else
 		{
 			LAST = (FIRST + N) % CAP;
@@ -86,6 +147,23 @@ public:
 		else if((FIRST > LAST) & (FIRST != --CAP)){	++FIRST; --N;}
 		else if((FIRST > LAST) & (FIRST == --CAP)){	FIRST = 0; --N;}
 		return tm;
+	};
+	void operator= (const MyQueue<T> & x)
+	{
+		if ( CAP < x.N)
+		{
+			auto t = new T[x.N + 2];
+			delete[] TMP;
+			TMP = t;
+		}
+		for (int i = 0; i < x.N; i++) { TMP[i] = x.TMP[i]; }
+		N = x.N;
+		FIRST = x.FIRST;
+		LAST = x.LAST;
+		CAP = x.CAP;
+		N = x.N;
+		FIRST = x.FIRST;
+		LAST = x.LAST;
 	};
 	~MyQueue(){ delete[] TMP; }
 };
@@ -127,6 +205,11 @@ int main()
 		q1.push(string("456"));
 		string s1 = q1.pop();
 		q1.push("qqq");
+		MyQueue<string> q2 = q1;
+		MyQueue<string> q22 = std::move(q1);
+		MyQueue<string> q3{ 10 , string("!") };
+		q1 = q3;
+		q2 = MyQueue < string >(5, string("?"));
 		NOP
 	}
 	{
