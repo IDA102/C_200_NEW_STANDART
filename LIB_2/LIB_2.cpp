@@ -6,7 +6,12 @@ template<typename T> class TEMPL
 {
 	vector<T> tmp;
 public:
-	TEMPL(std::initializer_list<T> l) :tmp{l}{};
+	TEMPL(std::initializer_list<T> l)
+	{
+		set<T> e = l;
+ 		tmp.operator=(e);
+		NOP
+	};
 	void TEMP_SET(std::initializer_list<T> l)	{ tmp.insert(tmp.end(),l); };
 	//Удаление любого количества зачении заданого списком инициализации
 	void TEMP_DELETE_LI(std::initializer_list<T> l)
@@ -34,7 +39,13 @@ public:
 		catch (std::out_of_range) { cout << "out_of_range"; }		
 	};
 	void SORT()	{sort(tmp.begin(),tmp.end());};
-	
+	void operator = (set<T> &l)
+	{
+		for (auto x : l)
+		{
+			tmp.push_back(x);
+		}
+	};
 	//TEMPL(T* h, T* hh) :tmp{ h,hh } { /*tmp.insert(tmp.end(), h, hh); */ };
 	//void TEMP_SET(T* h, T* hh) { tmp.insert(tmp.end(), h, hh); };
 	//void TEMP_set(vector<int>::iterator h, vector<int>::iterator hh)<<<<---------------------хочется что-то похожее
