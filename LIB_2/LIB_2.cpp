@@ -2,14 +2,37 @@
 
 #include "H.h"
 
+template <typename T>class ITERATOR
+{
+	T* element = nullptr;
+
+public:
+	ITERATOR(T* m) :element(m) {};
+	//ITERATOR(const ITERATOR& q){};
+	//ITERATOR& operator=(const ITERATOR& q);
+	//ITERATOR& operator=(T); // присвоение нового значения
+	T* operator++()	
+	{
+		//Не понимаю как тут через ноль перенести
+		//element = (element + 1) % CAP;
+		element = (element + 1);
+		return element;
+		NOP
+	};
+	bool operator!=(const ITERATOR& q) { return static_cast<bool>(*q.element != *(this->element)); };
+	T& operator*() {return *element;};
+	T operator*(int unsigned) { return element; };
+};
+
+enum PRIZ { LESS, GREATER };
 template<typename T> class TEMPL
 {
 	vector<T> tmp;
 public:
-	TEMPL(std::initializer_list<T> l)
+	TEMPL(std::initializer_list<T> k)
 	{
-		set<T> e = l;
- 		tmp.operator=(e);
+		set<T> e = k;
+		for (auto x : e) {tmp.push_back(x);}
 		NOP
 	};
 	void TEMP_SET(std::initializer_list<T> l)	{ tmp.insert(tmp.end(),l); };
@@ -38,17 +61,18 @@ public:
 		}
 		catch (std::out_of_range) { cout << "out_of_range"; }		
 	};
-	void SORT()	{sort(tmp.begin(),tmp.end());};
-	void operator = (set<T> &l)
-	{
-		for (auto x : l)
+	void SORT(PRIZ priz)
+	{ 
+		switch (priz)
 		{
-			tmp.push_back(x);
+			case LESS:
+				sort(tmp.begin(), tmp.end(), less<T>());
+				break;
+			case GREATER:
+				sort(tmp.begin(), tmp.end(), greater<T>());
+				break;
 		}
 	};
-	//TEMPL(T* h, T* hh) :tmp{ h,hh } { /*tmp.insert(tmp.end(), h, hh); */ };
-	//void TEMP_SET(T* h, T* hh) { tmp.insert(tmp.end(), h, hh); };
-	//void TEMP_set(vector<int>::iterator h, vector<int>::iterator hh)<<<<---------------------хочется что-то похожее
 };
 template<typename T> class MyQueue
 {
@@ -56,7 +80,6 @@ template<typename T> class MyQueue
 	size_t N = 0;
 	size_t FIRST = 0;
 	size_t LAST = 0;
-
 	T* TMP = nullptr;
 public:
 	MyQueue(std::initializer_list<T> l)
@@ -126,8 +149,18 @@ public:
 		TMP = x.TMP;
 		x.TMP = nullptr;
 	}
-	const T* begin() { return TMP; };
-	const T* end() { return  TMP + N + 1; };
+	//const T* begin() { return &TMP[FIRST]; };
+	//const T* end() { return  &TMP[LAST]; };
+	ITERATOR<T> begin() 
+	{
+		ITERATOR<T> q = &TMP[FIRST];
+		return q;
+	};
+	ITERATOR<T> end()
+	{ 
+		ITERATOR<T> q = &TMP[LAST+1];
+		return  q; 
+	};
 	void push(T &A)
 	{
 		if (!(CAP-N)) {/*Расширение массива*/ }
@@ -178,6 +211,7 @@ public:
 	};
 	~MyQueue(){ delete[] TMP; }
 };
+
 template<typename T> class MyUniquePTR
 {
 	 T* TMP = nullptr;
@@ -201,7 +235,7 @@ int main()
 		q.TEMP_DELETE_LI({ 1,2 });
 		q.TEMP_DELETE_RANGE(1, 3);
 		q.TEMP_SET({ 1,2,11,12,13,14 });
-		q.SORT();
+		q.SORT(LESS);
 		NOP
 	}
 	{
@@ -209,8 +243,23 @@ int main()
 		//string * q = new string[3]{r};// Почему так не работает
 		//string * q = new string[3]{ string("AAA"),string("qwe") }; // А так работает
 		
-		MyQueue<string> q1{ string("AAA"),string("qwe") };
-		for (auto el : q1) { std::cout << el << ' '; }//Что тут перегрузить что бы были корректные итераторы based for
+		MyQueue<string> q1{ string("AAA"),string("qwe") , string("vbn"),string("mjh") };
+		ITERATOR<string> it = q1.begin();
+		ITERATOR<string> itt = q1.end();
+		bool g = it.operator!=(itt);
+		NOP
+		//for (string itr : q1) { std::cout << it << ' '; }
+		for (string it : q1)
+		{
+			std::cout << it << ' '; 
+		}
+		
+		
+		
+		
+		
+		
+		
 		string s("123");
 		q1.push(s);
 		q1.push(string("456"));
