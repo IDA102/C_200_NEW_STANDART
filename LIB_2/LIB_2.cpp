@@ -1,11 +1,9 @@
 ﻿/* LIB_2.cpp :*/
 
 #include "H.h"
-
 template <typename T>class ITERATOR
 {
 	T* element = nullptr;
-
 public:
 	ITERATOR(T* m) :element(m) {};
 	//ITERATOR(const ITERATOR& q){};
@@ -14,7 +12,7 @@ public:
 	T* operator++()	
 	{
 		//Не понимаю как тут через ноль перенести
-		//element = (element + 1) % CAP;
+		//element = (element + 1) % CAP
 		element = (element + 1);
 		return element;
 		NOP
@@ -23,7 +21,6 @@ public:
 	T& operator*() {return *element;};
 	T operator*(int unsigned) { return element; };
 };
-
 enum PRIZ { LESS, GREATER };
 template<typename T> class TEMPL
 {
@@ -149,8 +146,6 @@ public:
 		TMP = x.TMP;
 		x.TMP = nullptr;
 	}
-	//const T* begin() { return &TMP[FIRST]; };
-	//const T* end() { return  &TMP[LAST]; };
 	ITERATOR<T> begin() 
 	{
 		ITERATOR<T> q = &TMP[FIRST];
@@ -163,7 +158,20 @@ public:
 	};
 	void push(T &A)
 	{
-		if (!(CAP-N)) {/*Расширение массива*/ }
+		if (!(CAP-N))
+		{
+			T* PROM = new T[CAP + 2];
+			for (size_t i = 0; i < CAP; ++i) 
+			{ 
+				size_t ind = (FIRST + i) % CAP;
+				PROM[i] = TMP[ind];
+			};
+			CAP = CAP + 2;
+			T* PROM2 = TMP;
+			TMP = PROM;
+			PROM = PROM2;
+			delete[] PROM;
+		}
 		else
 		{
 			LAST = (FIRST + N) % CAP;
@@ -211,20 +219,21 @@ public:
 	};
 	~MyQueue(){ delete[] TMP; }
 };
-
 template<typename T> class MyUniquePTR
 {
 	 T* TMP = nullptr;
 public:
+	MyUniquePTR() = delete;
 	MyUniquePTR(T* tmp) :TMP(tmp) {};
-	MyUniquePTR(const MyUniquePTR&) = delete;
-	MyUniquePTR(MyUniquePTR&& tmp) = default;
-	~MyUniquePTR() { delete TMP; };
-	T* GetString() { return &TMP; };
-	void SetNewString(const char* str) { *TMP = str; };
+	//MyUniquePTR(const  MyUniquePTR &tmp) {};
+	MyUniquePTR(MyUniquePTR&& tmp){TMP = tmp.TMP; tmp.TMP = nullptr;};
+	//T* GetString() { return &TMP; };
+	//void SetNewString(const char* str) { *TMP = str; };
 	T* operator->() { return TMP; };
 	T& operator *() { return *TMP; }
+	MyUniquePTR<T>& operator =(MyUniquePTR &&tmp) { T* SubZero = TMP; TMP = tmp.TMP; tmp.TMP = SubZero; return this; };
 	explicit operator bool() const { return TMP == nullptr; };
+	~MyUniquePTR() { delete TMP; };
 };
 int main()
 {
@@ -239,28 +248,12 @@ int main()
 		NOP
 	}
 	{
-		//initializer_list<string> r = { string("zzz"),string("xxx"),string("ccc") };
-		//string * q = new string[3]{r};// Почему так не работает
-		//string * q = new string[3]{ string("AAA"),string("qwe") }; // А так работает
-		
 		MyQueue<string> q1{ string("AAA"),string("qwe") , string("vbn"),string("mjh") };
-		ITERATOR<string> it = q1.begin();
-		ITERATOR<string> itt = q1.end();
-		bool g = it.operator!=(itt);
-		NOP
-		//for (string itr : q1) { std::cout << it << ' '; }
-		for (string it : q1)
-		{
-			std::cout << it << ' '; 
-		}
-		
-		
-		
-		
-		
-		
-		
+		//for (string it : q1){std::cout << it << ' ';}
 		string s("123");
+		q1.push(s);
+		q1.push(s);
+		q1.push(s);
 		q1.push(s);
 		q1.push(string("456"));
 		string s1 = q1.pop();
@@ -272,6 +265,9 @@ int main()
 		q2 = MyQueue<string>(5, string("?"));//<---- правильней вызывать move
 		q1 = { string("bbb"), string("ssss") };
 		NOP
+		//initializer_list<string> r = { string("zzz"),string("xxx"),string("ccc") };
+		//string * q = new string[3]{r};// Почему так не работает
+		//string * q = new string[3]{ string("AAA"),string("qwe") }; // А так работает
 	}
 	{
 		MyUniquePTR<string> p1(new string("abc"));
@@ -281,11 +277,15 @@ int main()
 		MyUniquePTR<string> p2 = move(p1);
 		if (p1) { cout << "No object!" << endl; }
 		MyUniquePTR<string> p3(new string("vvv"));
-		//p3 = p2;//И здесь компилятор должен выдавать ошибку
-		vector< MyUniquePTR < string >> v;
-		list< MyUniquePTR < string >> l;
-	
-		/*copy + move iterators*/
+		//p3 = p2;
+		vector<MyUniquePTR <string>> v25;
+		v25.push_back(MyUniquePTR<string>(new string("abc")));
+		v25.push_back(MyUniquePTR<string>(new string("def")));
+		v25.push_back(MyUniquePTR<string>(new string("thy")));
+		//list<MyUniquePTR<string>> l(make_move_iterator(v25.begin()), make_move_iterator(v25.end()));
+		list<MyUniquePTR<string>> l;
+		l.insert(l.end(), make_move_iterator(v25.begin()), make_move_iterator(v25.end()));
 		NOP
+		/*copy + move iterators*/
 	}
 }
