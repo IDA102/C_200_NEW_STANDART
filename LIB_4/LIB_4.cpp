@@ -19,60 +19,72 @@ template<typename T> void OUT(const T& a)
 		cout << endl;
 	}
 };
-
-template<typename Cont>void DA(Cont A)
+template<typename T>void DA(T A)
 {
-if constexpr (is_same< Cont, priority_queue<Cont::value_type>>::value) {
-	if constexpr (is_same<Cont, priority_queue<Cont::value_type, Cont::container_type, Cont::value_compare>>::value) {
-		size_t n = A.size();
-		if constexpr (is_pointer<Cont::value_type>::value) {
-			for (size_t i = 0; i < n; i++) {
-				cout << *(A.top()) << " ";
-				obj.pop();
+	size_t n = A.size();
+	if constexpr (is_same< T, priority_queue<T::value_type>>::value)
+	{
+		if constexpr (is_same<T, priority_queue<T::value_type, T::container_type, T::value_compare>>::value) 
+		{
+			if constexpr (is_pointer<T::value_type>::value) 
+			{
+				for (size_t i = 0; i < n; i++)
+				{
+					cout << *(A.top()) << " ";
+					A.pop();
+				}
+			}
+			else
+			{
+				for (size_t i = 0; i < n; i++)
+				{
+					cout << A.top() << " ";
+					A.pop();
+				}
+			}
+			cout << endl;
+		}
+	}
+	else if constexpr (is_same<T, queue<T::value_type, T::container_type>>::value) 
+	{
+		if constexpr (is_pointer<T::value_type>::value) 
+		{
+			for (size_t i = 0; i < n; i++)
+			{
+				cout << *(A.front()) << " ";
+				A.pop();
 			}
 		}
-		else {
-			for (size_t i = 0; i < n; i++) {
+		else
+		{
+			for (size_t i = 0; i < n; i++)
+			{
+				cout << A.front() << " ";
+				A.pop();
+			}
+		}
+		cout << endl;
+	}
+	else if constexpr (is_same<T, stack<T::value_type, T::container_type>>::value)
+	{
+		if constexpr (is_pointer<T::value_type>::value)
+		{
+			for (size_t i = 0; i < n; i++)
+			{
+				cout << *(A.top()) << " ";
+				A.pop();
+			}
+		}
+		else
+		{
+			for (size_t i = 0; i < n; i++) 
+			{
 				cout << A.top() << " ";
 				A.pop();
 			}
 		}
 		cout << endl;
 	}
-}
-else if constexpr (is_same<Cont, queue<Cont::value_type, Cont::container_type>>::value) {
-	size_t n =A.size();
-	if constexpr (is_pointer<Cont::value_type>::value) {
-		for (size_t i = 0; i < n; i++) {
-			cout << *(A.front()) << " ";
-			A.pop();
-		}
-	}
-	else {
-		for (size_t i = 0; i < n; i++) {
-			cout << A.front() << " ";
-			A.pop();
-		}
-	}
-	cout << endl;
-}
-else if constexpr (is_same<Cont, stack<Cont::value_type, Cont::container_type>>::value) {
-	size_t n = A.size();
-	if constexpr (is_pointer<Cont::value_type>::value) {
-		for (size_t i = 0; i < n; i++) {
-			cout << *(A.top()) << " ";
-			A.pop();
-		}
-	}
-	else {
-		for (size_t i = 0; i < n; i++) {
-			cout << A.top() << " ";
-			A.pop();
-		}
-	}
-
-	cout << endl;
-}
 }
 int main()
 {
@@ -116,16 +128,14 @@ int main()
 	/***************************************************************/
 //Задание 3.
 	/* 	Реализуйте шаблон функции вывода на печать значений элементов любого адаптера (stack, queue, priority_queue)
-	Подсказки: if constexpr, is_same
-	Предусмотрите вывод значений, если в адаптере хранятся указатели.
+		Подсказки: if constexpr, is_same
+		Предусмотрите вывод значений, если в адаптере хранятся указатели.
 	*/
 	{
 		stack<int> st;
 		stack<int*> stPtr;
-
 		queue<int> q;
 		queue<int*> qPtr;
-
 		priority_queue<int> pq;
 		priority_queue<int*> pqPtr;
 
@@ -148,6 +158,7 @@ int main()
 
 		DA(pq);
 		DA(pqPtr);
+		NOP
 	}
 
 	/***************************************************************/
