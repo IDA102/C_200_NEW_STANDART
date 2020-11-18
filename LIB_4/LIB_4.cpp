@@ -6,33 +6,74 @@ template <typename T,typename TT> void ADD(T& a ,const TT b)
 	if (BOOL)
 	{	for (size_t x = 0; x < a.size(); ++x){a[x] = a[x] + b;} 	}
 };
-
-template<typename T> bool f(T a)
-{
-	bool BOOL = std::is_pointer<T>::value;
-	return BOOL;
-};
-template<typename T> void OUT(T a)
+template<typename T> void OUT(const T& a)
 {	
-	//if constexpr (is_same<T, is_pointer<>::>::vlue)
-	bool BOOL;
-	for (auto x:a)
+	if constexpr (is_pointer<remove_reference<decltype(*begin(a))>::type>::value) 
 	{
-		 BOOL = f(x);
-		//bool BOOL = ;
-		if constexpr (f(x))
-		{
-			//cout << *x;
+		for (auto val : a){cout << *val << " ";}
+		cout << endl;
+	}
+	else 
+	{
+		for (auto val : a){cout << val << " ";}
+		cout << endl;
+	}
+};
+
+template<typename Cont>void DA(Cont A)
+{
+if constexpr (is_same< Cont, priority_queue<Cont::value_type>>::value) {
+	if constexpr (is_same<Cont, priority_queue<Cont::value_type, Cont::container_type, Cont::value_compare>>::value) {
+		size_t n = A.size();
+		if constexpr (is_pointer<Cont::value_type>::value) {
+			for (size_t i = 0; i < n; i++) {
+				cout << *(A.top()) << " ";
+				obj.pop();
+			}
 		}
-		else
-		{
-			//cout << x;
+		else {
+			for (size_t i = 0; i < n; i++) {
+				cout << A.top() << " ";
+				A.pop();
+			}
+		}
+		cout << endl;
+	}
+}
+else if constexpr (is_same<Cont, queue<Cont::value_type, Cont::container_type>>::value) {
+	size_t n =A.size();
+	if constexpr (is_pointer<Cont::value_type>::value) {
+		for (size_t i = 0; i < n; i++) {
+			cout << *(A.front()) << " ";
+			A.pop();
+		}
+	}
+	else {
+		for (size_t i = 0; i < n; i++) {
+			cout << A.front() << " ";
+			A.pop();
+		}
+	}
+	cout << endl;
+}
+else if constexpr (is_same<Cont, stack<Cont::value_type, Cont::container_type>>::value) {
+	size_t n = A.size();
+	if constexpr (is_pointer<Cont::value_type>::value) {
+		for (size_t i = 0; i < n; i++) {
+			cout << *(A.top()) << " ";
+			A.pop();
+		}
+	}
+	else {
+		for (size_t i = 0; i < n; i++) {
+			cout << A.top() << " ";
+			A.pop();
 		}
 	}
 
-};
-
-
+	cout << endl;
+}
+}
 int main()
 {
 	/***************************************************************/
@@ -45,7 +86,18 @@ int main()
 	*/
 	{
 		vector<int> v{ 1,2,3,4,5 };
-		OUT(v);
+		list<int> l{ 6,7,8,9 };
+		deque<double> d{ 1.1,2.2,3.3,4.4 };
+		set<int> s{ 1,3,5,7,9};
+		int M[] = { 10,20,30,40,50,60,70,80,90 };
+		vector<string*> pV{ new string("a"),new string("b") ,new string("c") };
+		OUT(v);	system("cls");
+		OUT(l);	system("cls");
+		OUT(d);	system("cls");
+		OUT(s);	system("cls");
+		OUT(M);	system("cls");
+		OUT(pV);system("cls");
+		NOP
 	}
 	/***************************************************************/
 	/* Задание 2 */
@@ -68,7 +120,34 @@ int main()
 	Предусмотрите вывод значений, если в адаптере хранятся указатели.
 	*/
 	{
-		//stack<int> s;
+		stack<int> st;
+		stack<int*> stPtr;
+
+		queue<int> q;
+		queue<int*> qPtr;
+
+		priority_queue<int> pq;
+		priority_queue<int*> pqPtr;
+
+		for (int i = 0; i < 5; i++) {
+			st.push(i + 1);
+			stPtr.push(new int(i + 10));
+
+			q.push(i - 1);
+			qPtr.push(new int(i + 25));
+
+			pq.push(i + 100);
+			pqPtr.push(new int(i + 111));
+		}
+
+		DA(st);
+		DA(stPtr);
+
+		DA(q);
+		DA(qPtr);
+
+		DA(pq);
+		DA(pqPtr);
 	}
 
 	/***************************************************************/

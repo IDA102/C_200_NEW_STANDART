@@ -14,6 +14,7 @@
 #include <cstdint>
 #include <stdlib.h>
 #include <stack>
+#include <queue>
 
 #define NOP __asm nop
 using namespace std;
